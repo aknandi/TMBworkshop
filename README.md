@@ -1,6 +1,8 @@
 TMB workshop
 ===========
 
+Presentation to accompany the workshop can be found here: https://docs.google.com/presentation/d/1foFjojH5EN8MyzqNVSeTafMI8m1BKgfrSer0Bku9qwE/edit?usp=sharing
+
 Overview
 -------
 
