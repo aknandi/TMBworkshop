@@ -10,12 +10,13 @@ cov_raster_paths <- c(accessibility_path, elevation_path, temperature_path)
 
 # Get prevelance data
 response <- read.csv(response_data_path)
-response_reduced <- response[response$country == 'Zambia' & response$year_end == '2012', ] %>% 
+response_reduced <- response[response$country == 'Madagascar' & response$year_end %in% 2013:2017, ] %>% 
   dplyr::select(c(latitude, longitude, examined, pf_pos, pf_pr))
 response_reduced <- response_reduced[response_reduced$examined > 20, ]
 
-survey_loc <- SpatialPoints(response_reduced[ , 2:1], 
-                            proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+survey_loc <- SpatialPointsDataFrame(response_reduced[ , 2:1], 
+                                     data = response_reduced[, c("pf_pr","examined")],
+                                     proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
 
 # Get covariate data
 cov_rasters <- lapply(cov_raster_paths, raster)
