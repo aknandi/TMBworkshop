@@ -13,12 +13,15 @@ library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(ggplot2)
+library(Matrix)
 
 compile('src/model1.cpp')
 dyn.load('src/model1')
 
 source('prepare_data.R')
 
+spplot(survey_loc, zcol = "pf_pr")
 head(response_reduced)
 head(cov_matrix)
 
@@ -46,3 +49,22 @@ report <- obj$report()
 pred_df <- data.frame(obs = report$positive_cases/report$examined_cases, pred = report$pixel_pred)
 insample_plot <- ggplot(pred_df, aes(obs, pred)) + geom_point() + geom_abline(intercept = 0, slope = 1, color = 'red')
 
+########
+## Predict model
+########
+
+# Mean prediction
+
+parameters <- obj$env$last.par.best
+parameters <- split(parameters, names(parameters))
+
+covs_by_betas <- list()
+for(i in seq_len(nlayers(cov_rasters))){
+  covs_by_betas[[i]] <- parameters$slope[i] * cov_rasters[[i]]
+}
+
+cov_by_betas <- stack(covs_by_betas)
+linear_predictor <- sum(cov_by_betas) + parameters$intercept
+
+prevalence <- 1 / (1 + exp(-1 * linear_predictor))
+spplot(prevalence)
