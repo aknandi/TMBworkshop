@@ -18,6 +18,10 @@ library(stats)
 compile('src/model2.cpp')
 dyn.load('src/model2')
 
+############
+# Data preparation
+############
+
 source('prepare_data.R')
 
 x <- runif(nrow(response_reduced), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
@@ -28,6 +32,12 @@ mesh <- INLA::inla.mesh.create(response_reduced[ , 2:1], extend = list(offset = 
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
+
+#-------------- MAIN MODEL FITTING CODE ------------
+
+############
+# Model fitting
+############
 
 parameters <- list(intercept = -5,
                    slope = rep(0, ncol(cov_matrix)),
@@ -54,6 +64,12 @@ opt <- nlminb(obj$par, obj$fn, obj$gr, control = list(iter.max = its, eval.max =
 sd_out <- sdreport(obj, getJointPrecision = TRUE)
 
 report <- obj$report()
+
+#---------------------------------------------
+
+########
+## Model prediction
+########
 
 # In sample performance
 pred_df <- data.frame(obs = report$positive_cases/report$examined_cases, pred = report$pixel_pred)

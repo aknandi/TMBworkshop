@@ -19,11 +19,21 @@ library(Matrix)
 compile('src/model1.cpp')
 dyn.load('src/model1')
 
+############
+# Data preparation
+############
+
 source('prepare_data.R')
 
 spplot(survey_loc, zcol = "pf_pr")
 head(response_reduced)
 head(cov_matrix)
+
+#-------------- MAIN MODEL FITTING CODE ------------
+
+############
+# Model fitting
+############
 
 parameters <- list(intercept = -5,
                    slope = rep(0, ncol(cov_matrix)),
@@ -45,13 +55,15 @@ sd_out <- sdreport(obj, getJointPrecision = TRUE)
 
 report <- obj$report()
 
+#---------------------------------------------
+
+########
+## Model prediction
+########
+
 # In sample performance
 pred_df <- data.frame(obs = report$positive_cases/report$examined_cases, pred = report$pixel_pred)
 insample_plot <- ggplot(pred_df, aes(obs, pred)) + geom_point() + geom_abline(intercept = 0, slope = 1, color = 'red')
-
-########
-## Predict model
-########
 
 # Mean prediction
 
