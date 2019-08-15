@@ -10,6 +10,7 @@
 # 01/08/19
 #
 
+library(malariaAtlas)
 library(dplyr)
 library(sp)
 library(raster)
@@ -51,7 +52,7 @@ input_data <- list(x = cov_matrix,
                    Apixel = Apix,
                    spde = spde,
                    prev_inc_par = c(2.616, -3.596, 1.594), 
-                   positive_cases = response_reduced$pf_pos,
+                   positive_cases = response_reduced$positive,
                    examined_cases = response_reduced$examined)
 
 obj <- MakeADFun(

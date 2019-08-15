@@ -8,6 +8,7 @@
 # 01/08/19
 #
 
+library(malariaAtlas)
 library(dplyr)
 library(sp)
 library(raster)
@@ -25,7 +26,6 @@ dyn.load('src/model1')
 
 source('prepare_data.R')
 
-spplot(survey_loc, zcol = "pf_pr")
 head(response_reduced)
 head(cov_matrix)
 
@@ -40,7 +40,7 @@ parameters <- list(intercept = -5,
                    log_point_sd = -2.3)
 
 input_data <- list(x = cov_matrix, 
-                   positive_cases = response_reduced$pf_pos,
+                   positive_cases = response_reduced$positive,
                    examined_cases = response_reduced$examined)
 
 obj <- MakeADFun(
