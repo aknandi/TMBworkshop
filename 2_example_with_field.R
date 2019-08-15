@@ -23,13 +23,16 @@ dyn.load('src/model2')
 # Data preparation
 ############
 
+# We are not using any incidence data
+inc <- FALSE
+
 source('prepare_data.R')
 
-x <- runif(nrow(response_reduced), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
-y <- runif(nrow(response_reduced), survey_loc@bbox[2, 1], survey_loc@bbox[2, 2])
+x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 2])
+y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()
 
-mesh <- INLA::inla.mesh.create(response_reduced[ , 2:1], extend = list(offset = 4))
+mesh <- INLA::inla.mesh.create(prev_data[ , 2:1], extend = list(offset = 4))
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
@@ -50,8 +53,8 @@ parameters <- list(intercept = -5,
 input_data <- list(x = cov_matrix, 
                    Apixel = Apix,
                    spde = spde, 
-                   positive_cases = response_reduced$positive,
-                   examined_cases = response_reduced$examined)
+                   positive_cases = prev_data$positive,
+                   examined_cases = prev_data$examined)
 
 obj <- MakeADFun(
   data = input_data, 

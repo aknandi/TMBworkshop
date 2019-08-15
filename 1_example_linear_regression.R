@@ -24,9 +24,12 @@ dyn.load('src/model1')
 # Data preparation
 ############
 
+# We are not using any incidence data
+inc <- FALSE
+
 source('prepare_data.R')
 
-head(response_reduced)
+head(prev_data)
 head(cov_matrix)
 
 #-------------- MAIN MODEL FITTING CODE ------------
@@ -40,8 +43,8 @@ parameters <- list(intercept = -5,
                    log_point_sd = -2.3)
 
 input_data <- list(x = cov_matrix, 
-                   positive_cases = response_reduced$positive,
-                   examined_cases = response_reduced$examined)
+                   positive_cases = prev_data$positive,
+                   examined_cases = prev_data$examined)
 
 obj <- MakeADFun(
   data = input_data, 
