@@ -3,6 +3,11 @@ TMB workshop
 
 Presentation to accompany the workshop can be found here: https://docs.google.com/presentation/d/1foFjojH5EN8MyzqNVSeTafMI8m1BKgfrSer0Bku9qwE/edit?usp=sharing
 
+Helpful links for reference:
+* Comprehensive TMB documentation: http://kaskr.github.io/adcomp/_book/Introduction.html
+* Specific help for coming to C++ from R: http://kaskr.github.io/adcomp/_book/CppTutorial.html#i-know-r-but-not-c
+* Github link with some simple TMB examples: https://github.com/kaskr/adcomp/wiki
+
 Overview
 -------
 
