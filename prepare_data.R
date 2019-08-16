@@ -1,3 +1,8 @@
+#
+# Prepare data for all three models
+#
+# Prevalence surveys, incidence surveys (if required) and covariate data extracted at survey locations
+#
 
 accessibility_path <- 'Z:/GBD2017/Processing/Static_Covariates/MAP/other_rasters/accessibility/accessibility.5k.MEAN.tif' 
 elevation_path <- 'Z:/GBD2017/Processing/Static_Covariates/MAP/other_rasters/elev_srtm/Elev_5km.tif'

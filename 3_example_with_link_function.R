@@ -16,6 +16,7 @@ library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(INLA)
 
 compile('src/model3.cpp')
 dyn.load('src/model3')
@@ -94,3 +95,7 @@ insample_inc_plot <- ggplot(pred_inc_df, aes(obs, pred)) +
 
 
 print(cowplot::plot_grid(plotlist = list(insample_prev_plot, insample_inc_plot)))
+
+
+# Mean and uncertainty maps
+source('predict.R')
