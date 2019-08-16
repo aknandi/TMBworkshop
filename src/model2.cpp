@@ -50,11 +50,6 @@ Type objective_function<Type>::operator()()
   Type priormean_slope = 0.0;
   Type priorsd_slope = 0.5;
   
-  // Priors for beta liklihood
-  PARAMETER(log_point_sd);
-  Type point_sd_mean = 0.1;
-  Type point_sd_sd = 0.1;
-
   // spde hyperparameters
   PARAMETER(log_kappa);
   PARAMETER(log_tau);
@@ -84,8 +79,6 @@ Type objective_function<Type>::operator()()
   for (int s = 0; s < slope.size(); s++) {
     nll -= dnorm(slope[s], priormean_slope, priorsd_slope, true);
   }
-  
-  nll -= dnorm(exp(log_point_sd), point_sd_mean, point_sd_sd, true);
   
   // Likelihood of hyperparameters for 2016 field
   nll -= dnorm(log_kappa, priormean_log_kappa, priorsd_log_kappa, true);

@@ -45,7 +45,6 @@ n_s <- nrow(spde$M0)
 
 parameters <- list(intercept = -5,
                    slope = rep(0, ncol(cov_matrix)),
-                   log_point_sd = -2.3,
                    log_kappa = -3,
                    log_tau = -0.5,
                    nodemean = rep(0, n_s))
@@ -66,6 +65,7 @@ its <- 10
 opt <- nlminb(obj$par, obj$fn, obj$gr, control = list(iter.max = its, eval.max = 2*its, trace = 0))
 
 sd_out <- sdreport(obj, getJointPrecision = TRUE)
+summary(sd_out, select = 'fixed')
 
 report <- obj$report()
 
