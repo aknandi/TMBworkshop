@@ -17,7 +17,7 @@ Malaria prevalence data: Open-access malaria data hosted by the Malaria Atlas Pr
 
 Malaria incidence data: Open-access data from https://datadryad.org/bitstream/handle/10255/dryad.82194/PfPvAllData01042015_AgeStand.csv?sequence=1. Saved in the data folder
 
-Covaraite data: TBC
+Covaraite data: WorldClim data (temperature, temparature variation and precipitation) at 5 minutes resolution from https://www.worldclim.org/bioclim using the getData R function
 
 
 ### Structure of the course
