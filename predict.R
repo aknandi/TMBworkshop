@@ -35,8 +35,8 @@ cov_by_betas <- stack(covs_by_betas)
 
 linear_predictor <- sum(cov_by_betas) + parameters$intercept + field_ras
 
-prevalence <- 1 / (1 + exp(-1 * linear_predictor))
-spplot(prevalence)
+mean_prevalence <- 1 / (1 + exp(-1 * linear_predictor))
+spplot(mean_prevalence)
 
 
 ##############
