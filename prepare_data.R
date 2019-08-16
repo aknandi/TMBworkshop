@@ -12,6 +12,7 @@ cov_raster_paths <- c(accessibility_path, elevation_path, temperature_path)
 
 # Get prevelance data
 prev_data <- getPR(country = 'Kenya', species = "Pf")
+kenya_shapefile <- getShp(ISO = "KEN", admin_level = c("admin0"))
 autoplot(prev_data)
 
 prev_data <- dplyr::select(prev_data, c(latitude, longitude, examined, positive, pr))
@@ -22,7 +23,7 @@ survey_loc_prev <- SpatialPoints(as.data.frame(prev_data[ , 2:1]),
 
 # Get covariate data
 cov_rasters <- lapply(cov_raster_paths, raster)
-cov_rasters <- lapply(cov_rasters, function(x) crop(x, extent(survey_loc_prev) + 2))
+cov_rasters <- lapply(cov_rasters, function(x) crop(x, extent(kenya_shapefile)))
 cov_rasters <- lapply(cov_rasters, function(x) scale(log(200 + x)))
 cov_rasters <- stack(cov_rasters)
 

@@ -36,7 +36,8 @@ cov_by_betas <- stack(covs_by_betas)
 linear_predictor <- sum(cov_by_betas) + parameters$intercept + field_ras
 
 mean_prevalence <- 1 / (1 + exp(-1 * linear_predictor))
-spplot(mean_prevalence)
+plot(mean_prevalence)
+plot(kenya_shapefile, add = T)
 
 
 ##############
@@ -77,5 +78,5 @@ prevalence <- do.call(stack, prevalence)
 probs <- c((1 - CI) / 2, 1 - (1 - CI) / 2)
 prevalence_ci <- calc(prevalence, function(x) quantile(x, probs = probs, na.rm = TRUE))
 
-spplot(prevalence_ci)
-spplot(prevalence_ci[[2]] - prevalence_ci[[1]])
+plot(prevalence_ci[[2]] - prevalence_ci[[1]])
+plot(kenya_shapefile, add = T)

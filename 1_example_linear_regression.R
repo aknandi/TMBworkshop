@@ -82,5 +82,7 @@ for(i in seq_len(nlayers(cov_rasters))){
 cov_by_betas <- stack(covs_by_betas)
 linear_predictor <- sum(cov_by_betas) + parameters$intercept
 
-prevalence <- 1 / (1 + exp(-1 * linear_predictor))
-spplot(prevalence)
+mean_prevalence <- 1 / (1 + exp(-1 * linear_predictor))
+
+plot(mean_prevalence)
+plot(kenya_shapefile, add = T)
