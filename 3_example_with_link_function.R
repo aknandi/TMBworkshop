@@ -29,11 +29,11 @@ inc <- TRUE
 
 source('prepare_data.R')
 
-x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 2])
-y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
+x <- runif(nrow(cov_matrix), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
+y <- runif(nrow(cov_matrix), survey_loc@bbox[2, 1], survey_loc@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()
 
-mesh <- INLA::inla.mesh.create(prev_data[ , 2:1], extend = list(offset = 4))
+mesh <- INLA::inla.mesh.create(survey_loc_df, extend = list(offset = 4))
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
@@ -56,7 +56,9 @@ input_data <- list(x = cov_matrix,
                    spde = spde,
                    prev_inc_par = c(2.616, -3.596, 1.594), 
                    positive_cases = prev_data$positive,
-                   examined_cases = prev_data$examined)
+                   examined_cases = prev_data$examined,
+                   incidence_cases = inc_data$incidence,
+                   incidence_pop = inc_data$population)
 
 obj <- MakeADFun(
   data = input_data, 
@@ -78,5 +80,17 @@ report <- obj$report()
 ########
 
 # In sample performance
-pred_df <- data.frame(obs = report$positive_cases/report$examined_cases, pred = report$pixel_pred)
-insample_plot <- ggplot(pred_df, aes(obs, pred)) + geom_point() + geom_abline(intercept = 0, slope = 1, color = 'red')
+pred_prev_df <- data.frame(obs = report$positive_cases/report$examined_cases, 
+                           pred = report$pixel_pred[1:length(report$examined_cases)])
+insample_prev_plot <- ggplot(pred_prev_df, aes(obs, pred)) + 
+  geom_point() + 
+  geom_abline(intercept = 0, slope = 1, color = 'red')
+
+pred_inc_df <- data.frame(obs = report$incidence_cases, 
+                          pred = report$pixel_inc_count)
+insample_inc_plot <- ggplot(pred_inc_df, aes(obs, pred)) + 
+  geom_point() + 
+  geom_abline(intercept = 0, slope = 1, color = 'red')
+
+
+print(cowplot::plot_grid(plotlist = list(insample_prev_plot, insample_inc_plot)))

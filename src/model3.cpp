@@ -38,6 +38,9 @@ Type objective_function<Type>::operator()()
   DATA_VECTOR(positive_cases);
   DATA_VECTOR(examined_cases);
   
+  DATA_VECTOR(incidence_cases);
+  DATA_VECTOR(incidence_pop);
+  
   // ------------------------------------------------------------------------ //
   // Parameters
   // ------------------------------------------------------------------------ //
@@ -73,9 +76,10 @@ Type objective_function<Type>::operator()()
 
   DATA_VECTOR(prev_inc_par);
   
-  // Number of prev points
-  int n_points = positive_cases.size();
-  
+  // Number of prev and inc points
+  int n_prev_points = positive_cases.size();
+  int n_inc_points = incidence_cases.size();
+  int n_points = n_prev_points + n_inc_points;
   Type nll = 0.0;
   
   // ------------------------------------------------------------------------ //
@@ -108,11 +112,11 @@ Type objective_function<Type>::operator()()
   // Calculate field for pixel data
   vector<Type> logit_prevalence_field_2016;
   logit_prevalence_field_2016 = Apixel * nodemean;
-  
+
   // ------------------------------------------------------------------------ //
   // Likelihood from data
   // ------------------------------------------------------------------------ //
-  
+
   vector<Type> pixel_linear_pred(n_points);
   vector<Type> pixel_pred(n_points);
   vector<Type> pixel_inc(n_points);
@@ -120,21 +124,32 @@ Type objective_function<Type>::operator()()
 
   pixel_linear_pred = intercept + x * slope  + logit_prevalence_field_2016.array();
   pixel_pred = invlogit(pixel_linear_pred);
-  
+
   pixel_inc = pixel_pred * prev_inc_par[0] +
                     pixel_pred.pow(2) * prev_inc_par[1] +
                     pixel_pred.pow(3) * prev_inc_par[2];
+  
+  for (int prev_point = 0; prev_point < n_prev_points; prev_point++) {
+    nll -= dbinom(positive_cases[prev_point], examined_cases[prev_point], pixel_pred[prev_point], true);
+    reportnll[prev_point] = -dbinom(positive_cases[prev_point], examined_cases[prev_point], pixel_pred[prev_point], true);
+  }
 
-  for (int point = 0; point < n_points; point++) {
-    nll -= dbinom(positive_cases[point], examined_cases[point], pixel_pred[point], true);
-    reportnll[point] = -dbinom(positive_cases[point], examined_cases[point], pixel_pred[point], true);
+  int point_index;
+  vector<Type> pixel_inc_count(n_inc_points);
+  for (int inc_point = 0; inc_point < n_inc_points; inc_point++) {
+    point_index = inc_point + n_prev_points;
+    pixel_inc_count[inc_point] = pixel_inc[point_index] * incidence_pop[inc_point];
+    nll -= dpois(incidence_cases[inc_point], pixel_inc_count[inc_point], true);
+    reportnll[point_index] = -dpois(incidence_cases[inc_point], pixel_inc_count[inc_point], true);
   }
 
   REPORT(pixel_pred);
-  REPORT(pixel_inc)
+  REPORT(pixel_inc);
+  REPORT(pixel_inc_count)
   REPORT(reportnll);
   REPORT(positive_cases);
   REPORT(examined_cases);
+  REPORT(incidence_cases)
   REPORT(nllpriors);
   REPORT(nll);
   

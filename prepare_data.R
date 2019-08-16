@@ -45,6 +45,13 @@ if(inc) {
   
   # Remove any points with NA values in covariates
   cov_matrix_inc <- cov_df_inc[complete.cases(cov_df_inc), ] %>% as.matrix
+  cov_matrix <- rbind(cov_matrix, cov_matrix_inc)
   inc_data <- inc_data[complete.cases(cov_df_inc), ]
+  
+  # Get combined survey locations for the mesh
+  survey_loc_df <- rbind(as.data.frame(prev_data[ , 2:1]), inc_data[ , 2:1])
+  survey_loc <- SpatialPoints(survey_loc_df, 
+                              proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  
 }
 
