@@ -48,10 +48,10 @@ Type objective_function<Type>::operator()()
   PARAMETER(intercept);
   PARAMETER_VECTOR(slope);
   
-  Type priormean_intercept = -4.0;
-  Type priorsd_intercept = 2.0; //priormean_intercept from data entry
-  Type priormean_slope = 0.0;
-  Type priorsd_slope = 0.5;
+  DATA_SCALAR(priormean_intercept);
+  DATA_SCALAR(priorsd_intercept);
+  DATA_SCALAR(priormean_slope);
+  DATA_SCALAR(priorsd_slope);
   
   // Prevalence to incidence relationship parameters
   DATA_VECTOR(prev_inc_par);
@@ -66,10 +66,10 @@ Type objective_function<Type>::operator()()
   PARAMETER(log_tau);
 
   // Priors on spde hyperparameters
-  Type priormean_log_kappa = -3;
-  Type priorsd_log_kappa = 0.5;
-  Type priormean_log_tau = -0.50;
-  Type priorsd_log_tau = 2.0;
+  DATA_SCALAR(priormean_log_kappa);
+  DATA_SCALAR(priorsd_log_kappa);
+  DATA_SCALAR(priormean_log_tau);
+  DATA_SCALAR(priorsd_log_tau);
   
   // Convert hyperparameters to natural scale
   Type tau = exp(log_tau);
