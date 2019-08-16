@@ -47,7 +47,7 @@ n_s <- nrow(spde$M0)
 
 parameters <- list(intercept = -5,
                    slope = rep(0, ncol(cov_matrix)),
-                   log_point_sd = -2.3,
+                   log_prev_inc_extra_slope = 0,
                    log_kappa = -3,
                    log_tau = -0.5,
                    nodemean = rep(0, n_s))
@@ -55,7 +55,9 @@ parameters <- list(intercept = -5,
 input_data <- list(x = cov_matrix, 
                    Apixel = Apix,
                    spde = spde,
-                   prev_inc_par = c(2.616, -3.596, 1.594), 
+                   prev_inc_par = c(2.616, -3.596, 1.594),
+                   priormean_log_prev_inc_extra_slope = 0,
+                   priorsd_log_prev_inc_extra_slope = 0.001,
                    positive_cases = prev_data$positive,
                    examined_cases = prev_data$examined,
                    incidence_cases = inc_data$incidence,
@@ -71,6 +73,7 @@ its <- 10
 opt <- nlminb(obj$par, obj$fn, obj$gr, control = list(iter.max = its, eval.max = 2*its, trace = 0))
 
 sd_out <- sdreport(obj, getJointPrecision = TRUE)
+summary(sd_out, select = 'fixed')
 
 report <- obj$report()
 

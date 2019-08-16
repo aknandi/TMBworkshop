@@ -53,11 +53,14 @@ Type objective_function<Type>::operator()()
   Type priormean_slope = 0.0;
   Type priorsd_slope = 0.5;
   
-  // Priors for beta liklihood
-  PARAMETER(log_point_sd);
-  Type point_sd_mean = 0.1;
-  Type point_sd_sd = 0.1;
-
+  // Prevalence to incidence relationship parameters
+  DATA_VECTOR(prev_inc_par);
+  PARAMETER(log_prev_inc_extra_slope);
+  DATA_SCALAR(priormean_log_prev_inc_extra_slope); 
+  DATA_SCALAR(priorsd_log_prev_inc_extra_slope);
+  
+  Type prev_inc_extra_slope = exp(log_prev_inc_extra_slope);
+  
   // spde hyperparameters
   PARAMETER(log_kappa);
   PARAMETER(log_tau);
@@ -73,8 +76,6 @@ Type objective_function<Type>::operator()()
   Type kappa = exp(log_kappa);
 
   PARAMETER_VECTOR(nodemean);
-
-  DATA_VECTOR(prev_inc_par);
   
   // Number of prev and inc points
   int n_prev_points = positive_cases.size();
@@ -91,7 +92,7 @@ Type objective_function<Type>::operator()()
     nll -= dnorm(slope[s], priormean_slope, priorsd_slope, true);
   }
   
-  nll -= dnorm(exp(log_point_sd), point_sd_mean, point_sd_sd, true);
+  nll -= dnorm(log_prev_inc_extra_slope, priormean_log_prev_inc_extra_slope, priorsd_log_prev_inc_extra_slope, true);
   
   // Likelihood of hyperparameters for 2016 field
   nll -= dnorm(log_kappa, priormean_log_kappa, priorsd_log_kappa, true);
@@ -128,6 +129,8 @@ Type objective_function<Type>::operator()()
   pixel_inc = pixel_pred * prev_inc_par[0] +
                     pixel_pred.pow(2) * prev_inc_par[1] +
                     pixel_pred.pow(3) * prev_inc_par[2];
+  
+  pixel_inc = prev_inc_extra_slope * pixel_inc;
   
   for (int prev_point = 0; prev_point < n_prev_points; prev_point++) {
     nll -= dbinom(positive_cases[prev_point], examined_cases[prev_point], pixel_pred[prev_point], true);
