@@ -15,6 +15,7 @@ library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(INLA)
 
 compile('src/model2.cpp')
 dyn.load(dynlib('src/model2'))
@@ -32,7 +33,11 @@ x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 
 y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()
 
-mesh <- INLA::inla.mesh.create(prev_data[ , 2:1], extend = list(offset = 4))
+
+mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
+                     max.edge = c(1, 2), 
+                     offset = c(2, 3))
+
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
@@ -78,3 +83,11 @@ report <- obj$report()
 # In sample performance
 pred_df <- data.frame(obs = report$positive_cases/report$examined_cases, pred = report$pixel_pred)
 insample_plot <- ggplot(pred_df, aes(obs, pred)) + geom_point() + geom_abline(intercept = 0, slope = 1, color = 'red')
+
+source('predict.R')
+
+
+
+
+
+

@@ -67,6 +67,7 @@ summary(sd_out, select = 'fixed')
 
 report <- obj$report()
 
+
 #---------------------------------------------
 
 ########
@@ -94,3 +95,8 @@ mean_prevalence <- 1 / (1 + exp(-1 * linear_predictor))
 
 plot(mean_prevalence)
 plot(kenya_shapefile, add = T)
+
+
+
+
+
