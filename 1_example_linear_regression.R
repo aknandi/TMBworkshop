@@ -29,8 +29,17 @@ inc <- FALSE
 
 source('prepare_data.R')
 
+# We downloaded and organised some prevalence data for Kenya.
 head(prev_data)
+
+# We downloaded some rasters of environmental data.
+cov_rasters
+
+# And then organised it into a matrix matching the prevalence data.
 head(cov_matrix)
+
+plot(cov_matrix[, 'Precipitation'], prev_data$pr)
+
 
 #-------------- MAIN MODEL FITTING CODE ------------
 
