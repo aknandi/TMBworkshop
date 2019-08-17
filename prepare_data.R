@@ -5,11 +5,11 @@
 #
 
 # Get prevelance data
-prev_data <- getPR(country = 'Kenya', species = "Pf")
+prev_data_full <- getPR(country = 'Kenya', species = "Pf")
 kenya_shapefile <- getShp(ISO = "KEN", admin_level = c("admin0"))
-autoplot(prev_data)
+autoplot(prev_data_full)
 
-prev_data <- dplyr::select(prev_data, c(latitude, longitude, examined, positive, pr))
+prev_data <- dplyr::select(prev_data_full, c(latitude, longitude, examined, positive, pr))
 prev_data <- prev_data[complete.cases(prev_data), ]
 
 survey_loc_prev <- SpatialPoints(as.data.frame(prev_data[ , 2:1]), 
