@@ -18,6 +18,9 @@ library(TMB)
 library(stats)
 library(INLA)
 
+# Not totally necessary.
+library(cowplot)
+
 compile('src/model3.cpp')
 dyn.load(dynlib('src/model3'))
 
@@ -34,7 +37,10 @@ x <- runif(nrow(cov_matrix), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
 y <- runif(nrow(cov_matrix), survey_loc@bbox[2, 1], survey_loc@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()
 
-mesh <- INLA::inla.mesh.create(survey_loc_df, extend = list(offset = 4))
+mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
+                     cutoff = 0.1,
+                     max.edge = c(0.5, 2), 
+                     offset = c(1, 3))
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)

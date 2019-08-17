@@ -80,3 +80,7 @@ prevalence_ci <- calc(prevalence, function(x) quantile(x, probs = probs, na.rm =
 
 plot(prevalence_ci[[2]] - prevalence_ci[[1]])
 plot(kenya_shapefile, add = T)
+
+
+
+
