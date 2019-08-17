@@ -17,7 +17,7 @@ library(TMB)
 library(stats)
 
 compile('src/model2.cpp')
-dyn.load('src/model2')
+dyn.load(dynlib('src/model2'))
 
 ############
 # Data preparation

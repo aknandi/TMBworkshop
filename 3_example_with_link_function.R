@@ -19,7 +19,7 @@ library(stats)
 library(INLA)
 
 compile('src/model3.cpp')
-dyn.load('src/model3')
+dyn.load(dynlib('src/model3'))
 
 ############
 # Data preparation

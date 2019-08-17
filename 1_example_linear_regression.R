@@ -18,7 +18,7 @@ library(ggplot2)
 library(Matrix)
 
 compile('src/model1.cpp')
-dyn.load('src/model1')
+dyn.load(dynlib('src/model1'))
 
 ############
 # Data preparation
