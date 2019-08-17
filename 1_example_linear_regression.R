@@ -48,8 +48,7 @@ plot(cov_matrix[, 'Precipitation'], prev_data$pr)
 ############
 
 parameters <- list(intercept = -5,
-                   slope = rep(0, ncol(cov_matrix)),
-                   log_point_sd = -2.3)
+                   slope = rep(0, ncol(cov_matrix)))
 
 input_data <- list(x = cov_matrix, 
                    positive_cases = prev_data$positive,
