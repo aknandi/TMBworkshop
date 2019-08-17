@@ -35,8 +35,9 @@ coords <- cbind(x, y) %>% as.matrix()
 
 
 mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
-                     max.edge = c(1, 2), 
-                     offset = c(2, 3))
+                     cutoff = 0.1,
+                     max.edge = c(0.5, 2), 
+                     offset = c(1, 3))
 
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
