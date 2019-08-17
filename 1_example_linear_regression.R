@@ -60,8 +60,8 @@ obj <- MakeADFun(
   parameters = parameters,
   DLL = "model1")
 
-its <- 10
-opt <- nlminb(obj$par, obj$fn, obj$gr, control = list(iter.max = its, eval.max = 2*its, trace = 0))
+its <- 1000
+opt <- nlminb(obj$par, obj$fn, obj$gr, control = list(iter.max = its, trace = 0))
 
 sd_out <- sdreport(obj, getJointPrecision = TRUE)
 summary(sd_out, select = 'fixed')
