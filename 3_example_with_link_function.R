@@ -33,6 +33,8 @@ inc <- TRUE
 
 source('prepare_data.R')
 
+head(inc_data)
+
 x <- runif(nrow(cov_matrix), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
 y <- runif(nrow(cov_matrix), survey_loc@bbox[2, 1], survey_loc@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()

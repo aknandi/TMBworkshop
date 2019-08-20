@@ -31,8 +31,8 @@ prev_data <- prev_data[complete.cases(cov_df), ]
 if(inc) {
   # Can be accessed from https://datadryad.org/bitstream/handle/10255/dryad.82194/PfPvAllData01042015_AgeStand.csv?sequence=1
 
-  inc_data_path <- 'data/PfPvAllData01042015_AgeStand.csv'
-  if(!file.exists(inc_data_path)) stop('Please download data from https://datadryad.org/bitstream/handle/10255/dryad.82194/PfPvAllData01042015_AgeStand.csv?sequence=1')  
+  inc_data_path <- 'https://datadryad.org/bitstream/handle/10255/dryad.82194/PfPvAllData01042015_AgeStand.csv?sequence=1'
+  #if(!file.exists(inc_data_path)) stop('Please download data from https://datadryad.org/bitstream/handle/10255/dryad.82194/PfPvAllData01042015_AgeStand.csv?sequence=1')  
 
   inc_data <- read.csv(inc_data_path)
   inc_data <- inc_data[inc_data$COUNTRY == 'Kenya', ]
