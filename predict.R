@@ -26,6 +26,8 @@ Amatrix <- inla.mesh.project(mesh, loc = as.matrix(coords))$A
 field <- (Amatrix %*% parameters$nodemean)[, 1]
 field_ras <- rasterFromXYZ(cbind(coords, field))
 
+plot(field_ras)
+
 covs_by_betas <- list()
 for(i in seq_len(nlayers(cov_rasters))){
   covs_by_betas[[i]] <- parameters$slope[i] * cov_rasters[[i]]
