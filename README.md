@@ -29,3 +29,26 @@ Three models of increasing complexity implemented in TMB to predict malaria prev
 **Model 2:** Linear model with Gaussian field
 
 **Model 3:** Two types of response data. Two contributions to the likelihood. Customised link function. Linear model with Gaussian field and optimised link function
+
+
+### Needed libraries
+
+If you are coming to the workshop please install these packages ahead of time.
+
+malariaAtlas
+dplyr
+sp
+raster
+TMB
+INLA
+Matrix
+ggplot2
+cowplot
+
+INLA must be installed from a separate repository.
+install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)
+
+
+
+
+
