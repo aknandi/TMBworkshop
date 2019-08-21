@@ -15,7 +15,6 @@ template <class Type>
 Type objective_function<Type>::operator()()
 {
   
-  using namespace R_inla;
   using namespace density;
   using namespace Eigen;
   

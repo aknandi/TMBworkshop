@@ -55,10 +55,10 @@ Type objective_function<Type>::operator()()
   PARAMETER(log_tau);
 
   // Priors on spde hyperparameters
-  Type priormean_log_kappa = -3;
-  Type priorsd_log_kappa = 0.5;
-  Type priormean_log_tau = -0.50;
-  Type priorsd_log_tau = 2.0;
+  Type priormean_log_kappa = -2;
+  Type priorsd_log_kappa = 0.1;
+  Type priormean_log_tau = -5;
+  Type priorsd_log_tau = 0.5;
   
   // Convert hyperparameters to natural scale
   Type tau = exp(log_tau);
