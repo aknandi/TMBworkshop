@@ -17,17 +17,11 @@ library(TMB)
 library(stats)
 library(INLA)
 
-compile('src/model2.cpp')
-dyn.load(dynlib('src/model2'))
-
 ############
 # Data preparation
 ############
 
-# We are not using any incidence data
-inc <- FALSE
-
-source('prepare_data.R')
+# source('prepare_data.R')
 
 x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 2])
 y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
@@ -45,14 +39,18 @@ n_s <- nrow(spde$M0)
 
 #-------------- MAIN MODEL FITTING CODE ------------
 
+
+compile('src/model2.cpp')
+dyn.load(dynlib('src/model2'))
+
 ############
 # Model fitting
 ############
 
 parameters <- list(intercept = -5,
                    slope = rep(0, ncol(cov_matrix)),
-                   log_kappa = -3,
-                   log_tau = -0.5,
+                   log_kappa = 0,
+                   log_tau = 1,
                    nodemean = rep(0, n_s))
 
 input_data <- list(x = cov_matrix, 

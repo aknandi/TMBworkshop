@@ -17,15 +17,9 @@ library(stats)
 library(ggplot2)
 library(Matrix)
 
-compile('src/model1.cpp')
-dyn.load(dynlib('src/model1'))
-
 ############
 # Data preparation
 ############
-
-# We are not using any incidence data
-inc <- FALSE
 
 source('prepare_data.R')
 
@@ -42,6 +36,9 @@ plot(cov_matrix[, 'Precipitation'], prev_data$pr)
 
 
 #-------------- MAIN MODEL FITTING CODE ------------
+
+compile('src/model1.cpp')
+dyn.load(dynlib('src/model1'))
 
 ############
 # Model fitting

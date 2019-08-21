@@ -21,17 +21,14 @@ library(INLA)
 # Not totally necessary.
 library(cowplot)
 
-compile('src/model3.cpp')
-dyn.load(dynlib('src/model3'))
-
 ############
 # Data preparation
 ############
 
 # We now want to use incidence data
-inc <- TRUE
 
-source('prepare_data.R')
+# source('prepare_data.R')
+source('prepare_incidence_data.R')
 
 head(inc_data)
 
@@ -48,6 +45,10 @@ Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
 
 #-------------- MAIN MODEL FITTING CODE ------------
+
+compile('src/model3.cpp')
+dyn.load(dynlib('src/model3'))
+
 
 ############
 # Model fitting
