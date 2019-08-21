@@ -2,7 +2,7 @@
 # Implements a linear regression model in TMB
 #
 # Inputs: malaria prevalence survey points
-#         covariate rasters: accessibility, elevation, temperature suitability
+#         covariate rasters: temperature, temperature seasonality, precipitation
 #
 # Anita Nandi
 # 01/08/19

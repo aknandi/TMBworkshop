@@ -2,7 +2,7 @@
 # Implements a linear model with gaussian field in TMB
 #
 # Inputs: malaria prevalence survey points
-#         covariate rasters: accessibility, elevation, temperature suitability
+#         covariate rasters: temperature, temperature seasonality, precipitation
 #         gaussian field
 #
 # Anita Nandi

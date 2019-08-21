@@ -3,7 +3,7 @@
 #
 # Inputs: malaria prevalence survey points
 #         malaria incidence survey points
-#         covariate rasters: accessibility, elevation, temperature suitability
+#         covariate rasters: temperature, temperature seasonality, precipitation
 #         gaussian field
 #
 # Anita Nandi
