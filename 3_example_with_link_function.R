@@ -10,12 +10,18 @@
 # 01/08/19
 #
 
+list.of.packages <- c("malariaAtlas", "dplyr", "sp", "raster", "TMB", "stats", "ggplot2", "Matrix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
 library(malariaAtlas)
 library(dplyr)
 library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(ggplot2)
+library(Matrix)
 library(INLA)
 
 # Not totally necessary.

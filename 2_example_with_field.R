@@ -9,12 +9,18 @@
 # 01/08/19
 #
 
+list.of.packages <- c("malariaAtlas", "dplyr", "sp", "raster", "TMB", "stats", "ggplot2", "Matrix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+
 library(malariaAtlas)
 library(dplyr)
 library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(ggplot2)
+library(Matrix)
 library(INLA)
 
 ############
@@ -23,16 +29,18 @@ library(INLA)
 
 # source('prepare_data.R')
 
+# Make coordinates for building the INLA mesh
 x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 2])
 y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
 coords <- cbind(x, y) %>% as.matrix()
 
-
+# Build INLA mesh for the gaussian field
 mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
                      cutoff = 0.1,
                      max.edge = c(0.5, 2), 
                      offset = c(1, 3))
 
+# Get spde and A matrix for the gaussian field
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
