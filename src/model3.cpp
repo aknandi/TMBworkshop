@@ -6,7 +6,7 @@
 //
 // Data: prevalence survey data and covariate data
 //
-// The model: prev = invlogit(intercept + x * slope + logit_prevalence_field_2016.array())
+// The model: prev = invlogit(intercept + x * slope + logit_prevalence_field.array())
 //
 
 #include <TMB.hpp>
@@ -94,7 +94,7 @@ Type objective_function<Type>::operator()()
   
   nll -= dnorm(log_prev_inc_extra_slope, priormean_log_prev_inc_extra_slope, priorsd_log_prev_inc_extra_slope, true);
   
-  // Likelihood of hyperparameters for 2016 field
+  // Likelihood of hyperparameters for field
   nll -= dnorm(log_kappa, priormean_log_kappa, priorsd_log_kappa, true);
   nll -= dnorm(log_tau, priormean_log_tau, priorsd_log_tau, true);
   
@@ -111,8 +111,8 @@ Type objective_function<Type>::operator()()
   // ------------------------------------------------------------------------ //
   
   // Calculate field for pixel data
-  vector<Type> logit_prevalence_field_2016;
-  logit_prevalence_field_2016 = Apixel * nodemean;
+  vector<Type> logit_prevalence_field;
+  logit_prevalence_field = Apixel * nodemean;
 
   // ------------------------------------------------------------------------ //
   // Likelihood from data
@@ -123,7 +123,7 @@ Type objective_function<Type>::operator()()
   vector<Type> pixel_inc(n_points);
   vector<Type> reportnll(n_points);
 
-  pixel_linear_pred = intercept + x * slope  + logit_prevalence_field_2016.array();
+  pixel_linear_pred = intercept + x * slope  + logit_prevalence_field.array();
   pixel_pred = invlogit(pixel_linear_pred);
 
   pixel_inc = pixel_pred * prev_inc_par[0] +
