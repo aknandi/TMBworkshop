@@ -9,7 +9,7 @@
 # 01/08/19
 #
 
-list.of.packages <- c("malariaAtlas", "dplyr", "sp", "raster", "TMB", "stats", "ggplot2", "Matrix")
+list.of.packages <- c("malariaAtlas", "dplyr", "sp", "raster", "TMB", "stats", "ggplot2", "Matrix", "sparseMVN")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 
