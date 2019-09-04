@@ -15,6 +15,7 @@ library(sp)
 library(raster)
 library(TMB)
 library(stats)
+library(ggplot2)
 library(INLA)
 
 ############
@@ -23,12 +24,11 @@ library(INLA)
 
 # source('prepare_data.R')
 
-x <- runif(nrow(prev_data), survey_loc_prev@bbox[1, 1], survey_loc_prev@bbox[1, 2])
-y <- runif(nrow(prev_data), survey_loc_prev@bbox[2, 1], survey_loc_prev@bbox[2, 2])
-coords <- cbind(x, y) %>% as.matrix()
+
+coords <- as.matrix(prev_data[, c('longitude', 'latitude')])
 
 
-mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
+mesh <- INLA::inla.mesh.2d(coords,
                      cutoff = 0.1,
                      max.edge = c(0.5, 2), 
                      offset = c(1, 3))
