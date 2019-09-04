@@ -32,9 +32,7 @@ source('prepare_incidence_data.R')
 
 head(inc_data)
 
-x <- runif(nrow(cov_matrix), survey_loc@bbox[1, 1], survey_loc@bbox[1, 2])
-y <- runif(nrow(cov_matrix), survey_loc@bbox[2, 1], survey_loc@bbox[2, 2])
-coords <- cbind(x, y) %>% as.matrix()
+coords <- as.matrix(rbind(prev_data[, c('longitude', 'latitude')], inc_data[, c('longitude', 'latitude')]))
 
 mesh <- INLA::inla.mesh.2d(prev_data[ , 2:1],
                      cutoff = 0.1,
