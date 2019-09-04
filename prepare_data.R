@@ -1,7 +1,7 @@
 #
 # Prepare data for all three models
 #
-# Prevalence surveys, incidence surveys (if required) and covariate data extracted at survey locations
+# Prevalence surveys and covariate data extracted at survey locations
 #
 
 # Get prevelance data

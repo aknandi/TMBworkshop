@@ -31,19 +31,39 @@ Three models of increasing complexity implemented in TMB to predict malaria prev
 **Model 3:** Two types of response data. Two contributions to the likelihood. Customised link function. Linear model with Gaussian field and optimised link function
 
 
+### File structure
+
+Three main scripts for 3 different models:
+* 1_example_linear_regression.R
+* 2_example_with_field.R
+* 3_example_with_link_function.R
+
+model specification cpp files (in src folder):
+* src/model1.cpp
+* src/model2.cpp
+* src/model3.cpp
+
+Data preparation:
+* **prepare_data.R:** prepares prevalence survey data and covariate data for all 3 models
+* **prepare_incidence_data.R:** prepared incidence survey data for 3rd model
+
+Predictions:
+* **predict.R:** predict prevalence for model 2 and 3. Plot mean and uncertainty
+
+
 ### Needed libraries
 
 If you are coming to the workshop please install these packages ahead of time.
 
-malariaAtlas
-dplyr
-sp
-raster
-TMB
-INLA
-Matrix
-ggplot2
-cowplot
+* malariaAtlas
+* dplyr
+* sp
+* raster
+* TMB
+* INLA
+* Matrix
+* ggplot2
+* cowplot
 
 INLA must be installed from a separate repository.
 install.packages("INLA", repos=c(getOption("repos"), INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)

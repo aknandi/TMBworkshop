@@ -2,12 +2,16 @@
 # Implements a linear model with gaussian field in TMB
 #
 # Inputs: malaria prevalence survey points
-#         covariate rasters: accessibility, elevation, temperature suitability
+#         covariate rasters: temperature, temperature seasonality, precipitation
 #         gaussian field
 #
 # Anita Nandi
 # 01/08/19
 #
+
+list.of.packages <- c("malariaAtlas", "dplyr", "sp", "raster", "TMB", "stats", "ggplot2", "Matrix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
 
 library(malariaAtlas)
 library(dplyr)
@@ -16,6 +20,7 @@ library(raster)
 library(TMB)
 library(stats)
 library(ggplot2)
+library(Matrix)
 library(INLA)
 
 ############
@@ -24,15 +29,14 @@ library(INLA)
 
 # source('prepare_data.R')
 
-
 coords <- as.matrix(prev_data[, c('longitude', 'latitude')])
-
 
 mesh <- INLA::inla.mesh.2d(coords,
                      cutoff = 0.1,
                      max.edge = c(0.5, 2), 
                      offset = c(1, 3))
 
+# Get spde and A matrix for the gaussian field
 spde <- (INLA::inla.spde2.matern(mesh, alpha = 2)$param.inla)[c("M0", "M1", "M2")]	
 Apix <- INLA::inla.mesh.project(mesh, loc = coords)$A
 n_s <- nrow(spde$M0)
